@@ -304,7 +304,7 @@ export default class VrGallary {
 }
 
 declare module "THREE" {
-  interface Object3D {
+  export interface Object3D {
     oData: any;
   }
 }

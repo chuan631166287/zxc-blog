@@ -310,4 +310,7 @@ declare module "THREE" {
   interface Object3D {
     oData: any;
   }
+  interface Group {
+    oData: any;
+  }
 }

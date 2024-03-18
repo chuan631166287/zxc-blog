@@ -313,4 +313,7 @@ declare module "THREE" {
   interface Group {
     oData: any;
   }
+  interface Object3DEventMap {
+    oData: any;
+  }
 }

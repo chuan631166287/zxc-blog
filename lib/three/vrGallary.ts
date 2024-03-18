@@ -235,6 +235,7 @@ export default class VrGallary {
     if (rotation) {
       gltf.scene.rotation.set(rotation.x, rotation.y, rotation.z);
     }
+    // @ts-ignore
     gltf.scene.oData = { id: "robot" };
     this._eventMeshes.push(gltf.scene);
     this._scene.add(gltf.scene);
@@ -275,6 +276,7 @@ export default class VrGallary {
         material,
         imgMaterial,
       ]);
+      // @ts-ignore
       cube.oData = item;
       cube.position.set(position.x, position.y, position.z);
       cube.scale.set(scale.x, scale.y, scale.z);
@@ -300,11 +302,5 @@ export default class VrGallary {
   }
   addAnimate(func: Function) {
     this._animations.push(func);
-  }
-}
-
-declare module "THREE" {
-  export interface Object3D {
-    oData: any;
   }
 }

@@ -9,7 +9,7 @@ export default function WebglComponent() {
     Zoomtastic.mount();
     const container = document.getElementById("container");
     const vr = new VrGallary({
-      debug: true,
+      debug: false,
       container: container as HTMLElement,
       cameraPosition: {
         x: 0,

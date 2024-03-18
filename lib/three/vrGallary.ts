@@ -304,16 +304,7 @@ export default class VrGallary {
 }
 
 declare module "THREE" {
-  interface Mesh {
-    oData: any;
-  }
   interface Object3D {
-    oData: any;
-  }
-  interface Group {
-    oData: any;
-  }
-  interface Object3DEventMap {
     oData: any;
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import VrGallary from "@/lib/three/vrGallary";
-import Zoomtastic from "zoomtastic";
+const Zoomtastic = require("zoomtastic");
 import * as THREE from "three";
 
 export default function WebglComponent() {

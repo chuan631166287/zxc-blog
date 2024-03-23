@@ -13,16 +13,16 @@ export default function WebglComponent() {
       container: container as HTMLElement,
       cameraPosition: {
         x: 0,
-        y: 1.5,
-        z: 0,
+        y: 15,
+        z: -30,
       },
       cameraLookat: {
         x: 2,
         y: 1.5,
-        z: 2,
+        z: 0,
       },
       imageClick: (imageData: any) => {
-        Zoomtastic.show(imageData.url);
+        Zoomtastic.show(imageData.oData.url);
       },
     });
     vr.loadGallary({

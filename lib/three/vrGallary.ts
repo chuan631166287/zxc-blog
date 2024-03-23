@@ -1,7 +1,11 @@
 import CameraControls from "camera-controls";
 import * as THREE from "three";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 CameraControls.install({ THREE: THREE });
 
@@ -25,17 +29,34 @@ export default class VrGallary {
   private _camera;
   private _controls;
   private _gltfLoader;
+  private _objLoader;
+  private _fbxLoader;
   private _clock;
   private _eventMeshes;
   private _transformControls;
+  private _stats;
+  private _gui;
   private _animations: Array<Function>;
 
   constructor(options: Options) {
     this._options = Object.assign({}, options);
     const { clientWidth, clientHeight } = this._options.container;
     this._eventMeshes = new Array<any>();
+    //gui
+    if (this._options.debug) {
+      this._gui = new GUI();
+    }
+
+    //帧率监视器
+    if (this._options.debug) {
+      this._stats = new Stats();
+      document.body.appendChild(this._stats.domElement);
+    }
+
     //加载器
     this._gltfLoader = new GLTFLoader();
+    this._objLoader = new OBJLoader();
+    this._fbxLoader = new FBXLoader();
 
     //渲染器
     this._renderer = new THREE.WebGLRenderer({
@@ -66,7 +87,8 @@ export default class VrGallary {
     this._scene.add(this._camera);
 
     //光
-    this._scene.add(new THREE.AmbientLight(0xffffff, 1));
+    const ambient = new THREE.AmbientLight(0xffffff, 1);
+    this._scene.add(ambient);
 
     //元素
     if (this._options.debug) {
@@ -82,7 +104,7 @@ export default class VrGallary {
       this._camera,
       this._renderer.domElement
     );
-    const distance = 0.000001;
+    const distance = 1;
     this._controls.maxDistance = 0.000001;
     this._controls.dragToOffset = false;
     this._controls.distance = 1;
@@ -161,6 +183,9 @@ export default class VrGallary {
     this._animations.forEach((func) => {
       func(delta);
     });
+    if (this._options.debug) {
+      this._stats.update();
+    }
     requestAnimationFrame(this._animate.bind(this));
   }
   private _initEvent() {
@@ -193,7 +218,9 @@ export default class VrGallary {
           if (this._options.debug) {
             this._transformControls.attach(odataMesh);
           } else {
-            this._options.imageClick(odataMesh);
+            if (odataMesh.oData.url) {
+              this._options.imageClick(odataMesh);
+            }
           }
         }
       }
@@ -300,6 +327,27 @@ export default class VrGallary {
       );
     });
   }
+
+  loadFbx(params: any): Promise<any> {
+    const { url, onProgress } = params;
+    return new Promise((resolve) => {
+      this._fbxLoader.load(url, (fbx) => {
+        console.log("fbx", fbx);
+        resolve(fbx);
+      });
+    });
+  }
+
+  loadObj(params: any): Promise<any> {
+    const { url, onProgress } = params;
+    return new Promise((resolve) => {
+      this._objLoader.load(url, (obj) => {
+        console.log("obj", obj);
+        resolve(obj);
+      });
+    });
+  }
+
   addAnimate(func: Function) {
     this._animations.push(func);
   }

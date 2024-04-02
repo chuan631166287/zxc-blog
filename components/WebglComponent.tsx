@@ -9,16 +9,16 @@ export default function WebglComponent() {
     Zoomtastic.mount();
     const container = document.getElementById("container");
     const vr = new VrGallary({
-      debug: false,
+      debug: true,
       container: container as HTMLElement,
       cameraPosition: {
         x: 0,
-        y: 15,
-        z: -30,
+        y: 0,
+        z: 0,
       },
       cameraLookat: {
-        x: 2,
-        y: 1.5,
+        x: 1,
+        y: 0,
         z: 0,
       },
       imageClick: (imageData: any) => {
@@ -35,22 +35,22 @@ export default function WebglComponent() {
       scale: 10,
       onProgress: (p: any) => {},
     });
-    vr.loadRobot({
-      url: "/assets/robot/robot.glb",
-      position: {
-        x: 0,
-        y: -5,
-        z: 0,
-      },
-      scale: 3,
-      onProgress: (p: any) => {},
-    }).then((gltf: any) => {
-      const mixer = new THREE.AnimationMixer(gltf.scene);
-      const ani = gltf.animations[0];
-      mixer.clipAction(ani).setDuration(5).play();
-      mixer.update(0);
-      vr.addAnimate((d: number) => mixer.update(d));
-    });
+    // vr.loadRobot({
+    //   url: "/assets/robot/robot.glb",
+    //   position: {
+    //     x: 0,
+    //     y: -5,
+    //     z: 0,
+    //   },
+    //   scale: 3,
+    //   onProgress: (p: any) => {},
+    // }).then((gltf: any) => {
+    //   const mixer = new THREE.AnimationMixer(gltf.scene);
+    //   const ani = gltf.animations[0];
+    //   mixer.clipAction(ani).setDuration(5).play();
+    //   mixer.update(0);
+    //   vr.addAnimate((d: number) => mixer.update(d));
+    // });
     vr.loadItems([
       {
         url: "/assets/pictures2/1.jpg",
